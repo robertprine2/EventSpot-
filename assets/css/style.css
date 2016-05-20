@@ -26,16 +26,21 @@ header nav {
 header p {
   padding: 0 20px;
   margin: 0;
+  font-size: 20px;
 }
 
 .jumbotron {
   display: flex;
   align-items: center;
-  background-image: url('https://s3.amazonaws.com/codecademy-content/projects/make-a-website/lesson-4/jumbotron.jpg');
   background-size: cover;
   color: #ffffff;
-  height: 500px;
+  height: 250px;
   text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-image: url(../images/party.jpg);
+  background-color: #181f39;
+  background-blend-mode: screen;
+  opacity: 0.9;
+  background-position: 50px 700px;
 }
 
 .jumbotron h2 {
@@ -96,3 +101,14 @@ footer li img {
   width: 32px;
   height: 32px;
 }
+
+.auth-image {
+  width: 200px;
+  height: auto;
+  margin-top: 10px;
+  float: left;
+  margin-right: 25px;
+}
+
+
+
