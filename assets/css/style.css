@@ -2,6 +2,12 @@ body {
   text-align: center;
 }
 
+/* Modal */
+
+#errorZip {
+  color: red;
+}
+
 /* Social Icons */
 
 .socIcon {
