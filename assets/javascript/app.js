@@ -38,7 +38,7 @@ $(document).ready(function(){
 
 				// sets what the user typed to theme variable
 				app.theme = $("#theme").val().trim();
-				console.log(app.theme);
+
 				// checks that zip code is exactly five characters and a number
 
 				if (app.zip.length == 5 
@@ -67,7 +67,8 @@ $(document).ready(function(){
 
 						// send user error for theme
 						$('#errorTheme').html("You need to enter a theme.");
-					}
+
+					} // end else theme has something typed in
 
 				} // end if zip length = 5
 
@@ -75,8 +76,6 @@ $(document).ready(function(){
 
 					// send user error for zip code
 					$('#errorZip').html("You need to enter a ZIP Code that is exactly 5 numbers.");
-
-					// don't close modal
 
 				} // end else zip length = 5
 

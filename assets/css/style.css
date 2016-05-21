@@ -2,10 +2,91 @@ body {
   text-align: center;
 }
 
+
 /* Modal */
 
 #errorZip, #errorTheme {
   color: red;
+}
+
+#modalButton {
+
+}
+
+/* Main Page */
+
+header {
+  padding: 20px 0;
+}
+
+header .row,
+footer .row {
+  display: flex;
+  align-items: center;
+}
+
+header h1 {
+  font-weight: 700;
+  margin: 0;
+}
+
+header nav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+header p {
+  padding: 0 20px;
+  margin: 0;
+  font-size: 20px;
+}
+
+.jumbotron {
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  color: #ffffff;
+  height: 250px;
+  text-shadow: 0.25px 0.25px 0.25px #000000;
+  background-image: url(../images/party.jpg);
+  background-color: #181f39;
+  background-blend-mode: screen;
+  opacity: 0.9;
+  background-position: 50px 700px;
+}
+
+.jumbotron h2 {
+  font-size: 60px;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+.jumbotron h3 {
+  margin: 0 0 20px;
+  color: #fff;
+}
+
+section .row img {
+  margin: 0 0 30px;
+  width: 100%;
+}
+
+.col-md-6 {
+  margin: 0 0 30px;
+}
+
+footer {
+  font-size: 12px;
+  padding: 20px 0;
+}
+
+.auth-image {
+  width: 200px;
+  height: auto;
+  margin-top: 10px;
+  float: left;
+  margin-rgith: 25px;
 }
 
 /* Social Icons */
