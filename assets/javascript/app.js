@@ -34,10 +34,11 @@ $(document).ready(function(){
 			$('#setLT').on('click', function() {
 
 				// sets what the user typed to zip variable
-					app.zip = $("#zip").val().trim();
+				app.zip = $("#zip").val().trim();
 
-					console.log(app.zip);
-
+				// sets what the user typed to theme variable
+				app.theme = $("#theme").val().trim();
+				console.log(app.theme);
 				// checks that zip code is exactly five characters and a number
 
 				if (app.zip.length == 5 
@@ -45,16 +46,35 @@ $(document).ready(function(){
 					
 					console.log('yay you typed correctly');
 
-					// close modal
+					// if theme has something written in it
+					if (app.theme != "") {
 
-					// *******call function to search APIs
+						// clear error
+						$('#errorZip').html("");
+
+						// close/hide modal
+
+						$('#myModal').modal('hide');
+
+						// *******call function to search APIs
+
+					} // end if theme has something typed in
+
+					else {
+
+						// clear error
+						$('#errorZip').html("");
+
+						// send user error for theme
+						$('#errorTheme').html("You need to enter a theme.");
+					}
 
 				} // end if zip length = 5
 
 				else {
 
-					// send user error report
-					$('#errorZip').html("You need to type a ZIP Code that is exactly 5 numbers.");
+					// send user error for zip code
+					$('#errorZip').html("You need to enter a ZIP Code that is exactly 5 numbers.");
 
 					// don't close modal
 
