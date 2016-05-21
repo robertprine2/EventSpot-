@@ -1,29 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Skillfair</title>
-  <meta charset="utf-8"/>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <meta charset="utf-8">
+    <title>Event Spot</title>
+    <script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+    <link rel="SHORTCUT ICON" href="assets/images/favicon.ico">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/ico">
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-
-<!--   <header class="container">
-
-    <div class="row">
-    
-      <h1 class="col-sm-4"></h1>
-      <nav class="col-sm-8 text-right">
-      </nav>
-      <nav class="col-sm-8">
-      <p>newest</p>
-      <p>catalogue</p>
-      <p>contact</p>  
-      </nav>
-   </div> -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Event Preferences</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <p>Please type the ZIP Code for the location of where you would like your event to be held.</p><br>
+                        <div class="form">
+                            <input type="text" placeholder="88888" id="zip"><br>
+                        </div><br>
+                        <p id="errorZip"></p><br>
+                        
+                        <p>Please type the theme that you would like for your event.</p><br>
+                        <div class="form">
+                            <input type="text" placeholder="masquerade" id="theme"><br>
+                        </div>
+                        <p id="errorTheme"></p><br>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="modalButton">Save Theme and Location</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 <div class="jumbotron">
   <h1>.</h1>
@@ -78,6 +100,7 @@
         &copy; Copyright 2016 <!-- add 3rn image -->
     </footer>
 
-    <script src="assets/javascript/game.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="assets/javascript/app.js"></script>
 </body>
 </html>
