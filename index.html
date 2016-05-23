@@ -7,6 +7,17 @@
     <link rel="SHORTCUT ICON" href="assets/images/favicon.ico">
     <link rel="icon" href="assets/images/favicon.ico" type="image/ico">
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      // var config = {
+      //   apiKey: "AIzaSyCebXxS7VD2lwcfycmt4uM1mGjUZXJxwgw",
+      //   authDomain: "event-spot.firebaseapp.com",
+      //   databaseURL: "https://event-spot.firebaseio.com",
+      //   storageBucket: "event-spot.appspot.com",
+      // };
+      // firebase.initializeApp(config);
+    </script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
@@ -27,17 +38,17 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <p>Please type the ZIP Code for the location of where you would like your event to be held.</p><br>
+                        <p>User Name</p><br>
                         <div class="form">
-                            <input type="text" placeholder="88888" id="zip"><br>
+                            <input type="text" placeholder="Batman" id="user"><br>
                         </div><br>
-                        <p id="errorZip"></p><br>
+                        <p id="errorUser"></p><br>
                         
-                        <p>Please type the theme that you would like for your event.</p><br>
+                        <p>Email</p><br>
                         <div class="form">
-                            <input type="text" placeholder="masquerade" id="theme"><br>
+                            <input type="text" placeholder="masquerade" id="email"><br>
                         </div>
-                        <p id="errorTheme"></p><br>
+                        <p id="errorEmail"></p><br>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -67,11 +78,29 @@
         <div class="row">
             <div class="col-sm-4">
                 <div id="Venue">
+                    <form>
+                        <p>Please enter the five digit Zip Code of where you would like to hold the event.</p><br>
+                        <div>
+                            <input  class="rounded" type="text" placeholder="00000" id="zip"><br>
+                        </div><br>
+                        <p id="errorZip"></p><br>
+                        
+                        <input id="searchZip" class="button-white" type="submit" value="Search ZIP Code">
+                    </form>
                 </div>
             </div>
 
             <div class="col-sm-4">
                 <div id="Decorations">
+                    <form>
+                        <p>Please enter the theme for your event.</p><br>
+                        <div>
+                            <input class="rounded" type="text" placeholder="masquerade" id="theme"><br>
+                        </div><br>
+                        <p id="errorTheme"></p><br>
+                        
+                        <input id="searchTheme" class="button-white" type="submit" value="Search Theme">
+                    </form>
                 </div>
             </div>
 
@@ -99,7 +128,7 @@
     <footer>
         &copy; Copyright 2016 <!-- add 3rn image -->
     </footer>
-
+    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script src="assets/javascript/app.js"></script>
 </body>
