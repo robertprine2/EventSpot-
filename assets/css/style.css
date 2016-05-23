@@ -89,6 +89,45 @@ footer {
   margin-rgith: 25px;
 }
 
+/* Forms and Search Buttons */
+
+.rounded {
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  padding: 5px;
+}
+
+.button-white{
+  width: 150px;  
+  height: 40px;  
+  color: #908d8d;
+  text-align: center;   
+  line-height: 50px;
+  background: white;
+  border: solid 2px #908d8d;
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  margin: auto;
+}
+
+.button-white p {
+   font-size: 18px;
+   line-height: 35px;
+}
+ 
+.button-white a {
+   text-decoration: none;
+   color: black;
+}
+ 
+ .button-white:hover {
+  border: solid 2px black;
+  color: black;
+  cursor: pointer;
+}
+
 /* Social Icons */
 
 .socIcon {

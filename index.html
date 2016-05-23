@@ -10,13 +10,13 @@
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
     <script>
       // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyCebXxS7VD2lwcfycmt4uM1mGjUZXJxwgw",
-        authDomain: "event-spot.firebaseapp.com",
-        databaseURL: "https://event-spot.firebaseio.com",
-        storageBucket: "event-spot.appspot.com",
-      };
-      firebase.initializeApp(config);
+      // var config = {
+      //   apiKey: "AIzaSyCebXxS7VD2lwcfycmt4uM1mGjUZXJxwgw",
+      //   authDomain: "event-spot.firebaseapp.com",
+      //   databaseURL: "https://event-spot.firebaseio.com",
+      //   storageBucket: "event-spot.appspot.com",
+      // };
+      // firebase.initializeApp(config);
     </script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -42,13 +42,13 @@
                         <div class="form">
                             <input type="text" placeholder="Batman" id="user"><br>
                         </div><br>
-                        <p id="errorZip"></p><br>
+                        <p id="errorUser"></p><br>
                         
                         <p>Email</p><br>
                         <div class="form">
-                            <input type="text" placeholder="masquerade" id="theme"><br>
+                            <input type="text" placeholder="masquerade" id="email"><br>
                         </div>
-                        <p id="errorTheme"></p><br>
+                        <p id="errorEmail"></p><br>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -80,12 +80,12 @@
                 <div id="Venue">
                     <form>
                         <p>Please enter the five digit Zip Code of where you would like to hold the event.</p><br>
-                        <div class="form">
-                            <input type="text" placeholder="00000" id="zip"><br>
+                        <div>
+                            <input  class="rounded" type="text" placeholder="00000" id="zip"><br>
                         </div><br>
                         <p id="errorZip"></p><br>
                         
-                        <button id="searchZip" type="submit" value="Submit">Search Location</button>
+                        <input id="searchZip" class="button-white" type="submit" value="Search ZIP Code">
                     </form>
                 </div>
             </div>
@@ -94,12 +94,12 @@
                 <div id="Decorations">
                     <form>
                         <p>Please enter the theme for your event.</p><br>
-                        <div class="form">
-                            <input type="text" placeholder="masquerade" id="theme"><br>
+                        <div>
+                            <input class="rounded" type="text" placeholder="masquerade" id="theme"><br>
                         </div><br>
                         <p id="errorTheme"></p><br>
                         
-                        <button id="searchTheme" type="submit" value="Submit">Search Theme</button>
+                        <input id="searchTheme" class="button-white" type="submit" value="Search Theme">
                     </form>
                 </div>
             </div>

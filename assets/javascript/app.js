@@ -27,7 +27,7 @@ $(document).ready(function(){
 
 			// if user has created a theme and location already don't pull up the modal
 
-			if (app.userId == "" && app.userEmail == "") {
+			if (app.user == "" && app.userEmail == "") {
 
 				$('#myModal').modal({
 
@@ -49,7 +49,7 @@ $(document).ready(function(){
 
 		setUserAndEmail: function() {
 
-			app.userId = $('#user').val().trim().toLowerCase
+			app.user = $('#user').val().trim().toLowerCase
 
 			// if a username is already in firebase load their data into local variables
 
@@ -71,7 +71,7 @@ $(document).ready(function(){
 
 		setLocation: function() {
 
-			$('#setLocation').on('click', function() {
+			$('#searchZip').on('click', function() {
 
 				// sets what the user typed to zip variable
 				app.zip = $("#zip").val().trim();
@@ -95,17 +95,18 @@ $(document).ready(function(){
 
 				} // end else zip length = 5
 
-			}); 
+				return false;
+			}); // end of on click to search zip code
 
 		}, // End of setLocation function
 
 		setTheme: function() {
 
-			$('#setTheme').on('click', function() {
+			$('#searchTheme').on('click', function() {
 
 				// sets what the user typed to theme variable
 				app.theme = $("#theme").val().trim();
-
+				console.log(app.theme);
 				// if theme has something written in it
 				if (app.theme != "") {
 
@@ -123,31 +124,32 @@ $(document).ready(function(){
 
 				} // end else theme has something typed in
 
+				return false;
 			}); // end of click on #setTheme
 
 		}, // end setTheme function
 
 	} // End of app object
 
-	var provider = new firebase.auth.GoogleAuthProvider();
-	firebase.auth().signInWithPopup(provider).then(function(result) {
-	// This gives you a Google Access Token. You can use it to access the Google API.
-		var token = result.credential.accessToken;
-		console.log(token);
-		// The signed-in user info.
-		app.user = result.user;
-		console.log(app.user);
-		console.log(app.user.uid);
-		firebase.auth().onAuthStateChanged(function(user) {
-		if (app.user) {
-			userid = app.user.uid
-		$('#auth').html('<a class="waves-effect waves-light btn" id="logout">Logout</a>')
-			} else {
-			userid = null;
-			}
+	// var provider = new firebase.auth.GoogleAuthProvider();
+	// firebase.auth().signInWithPopup(provider).then(function(result) {
+	// // This gives you a Google Access Token. You can use it to access the Google API.
+	// 	var token = result.credential.accessToken;
+	// 	console.log(token);
+	// 	// The signed-in user info.
+	// 	app.user = result.user;
+	// 	console.log(app.user);
+	// 	console.log(app.user.uid);
+	// 	firebase.auth().onAuthStateChanged(function(user) {
+	// 	if (app.user) {
+	// 		userid = app.user.uid
+	// 	$('#auth').html('<a class="waves-effect waves-light btn" id="logout">Logout</a>')
+	// 		} else {
+	// 		userid = null;
+	// 		}
 			
-	console.log(userid);
-	})
+	// console.log(userid);
+	// })
 
 
 
@@ -155,5 +157,11 @@ $(document).ready(function(){
 	// modal pops up
 
 	// app.modal();
+
+	// enable search buttons
+
+	app.setLocation();
+
+	app.setTheme();
 
 }); // End document.ready function
