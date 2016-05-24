@@ -106,7 +106,7 @@ $(document).ready(function(){
 
 				// sets what the user typed to theme variable
 				app.theme = $("#theme").val().trim();
-				console.log(app.theme);
+				
 				// if theme has something written in it
 				if (app.theme != "") {
 
@@ -131,25 +131,30 @@ $(document).ready(function(){
 
 	} // End of app object
 
-	// var provider = new firebase.auth.GoogleAuthProvider();
-	// firebase.auth().signInWithPopup(provider).then(function(result) {
-	// // This gives you a Google Access Token. You can use it to access the Google API.
-	// 	var token = result.credential.accessToken;
-	// 	console.log(token);
-	// 	// The signed-in user info.
-	// 	app.user = result.user;
-	// 	console.log(app.user);
-	// 	console.log(app.user.uid);
-	// 	firebase.auth().onAuthStateChanged(function(user) {
-	// 	if (app.user) {
-	// 		userid = app.user.uid
-	// 	$('#auth').html('<a class="waves-effect waves-light btn" id="logout">Logout</a>')
-	// 		} else {
-	// 		userid = null;
-	// 		}
-			
-	// console.log(userid);
-	// })
+	var provider = new firebase.auth.GoogleAuthProvider();
+
+	firebase.auth().signInWithPopup(provider).then(function(result) {
+		// This gives you a Google Access Token. You can use it to access the Google API.
+		var token = result.credential.accessToken;
+		console.log(token);
+		// The signed-in user info.
+		app.user = result.user;
+		console.log(app.user);
+		console.log(app.user.uid);
+		firebase.auth().onAuthStateChanged(function(user) {
+			// if there is a user add a logout button
+			if (app.user) {
+				userid = app.user.uid
+				$('#auth').html('<a class="waves-effect waves-light btn" id="logout">Logout</a>')
+			} // end of if there is a user
+			else {
+				userid = null;
+			} // end of else there is no user
+				
+			console.log(userid);
+		}); // end of auth state changed to add button to log out
+
+	}); // end of sign in with google popup
 
 
 
