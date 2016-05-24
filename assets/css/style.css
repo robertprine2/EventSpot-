@@ -91,6 +91,11 @@ footer {
 
 /* Forms and Search Buttons */
 
+#allowPopUps {
+  font-size: 30px;
+  color: red;
+}
+
 .rounded {
   -moz-border-radius: 30px;
   -webkit-border-radius: 30px;

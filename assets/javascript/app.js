@@ -4,11 +4,17 @@ $(document).ready(function(){
 
 		// variable for firebase app
 
-		dataInfo: new Firebase("https://eventspot.firebaseio.com/"),
+		dataInfo: new Firebase("https://eventspot-a7503.firebaseio.com/"),
+
+		user: undefined,
+
+		// firebase child
+
+		users: "users",
 
 		// user ID variable to make an object in firebase
 
-		user: undefined,
+		userid: "",
 
 		// user email variable to be put into the userID object in firebase
 
@@ -22,48 +28,87 @@ $(document).ready(function(){
 
 		theme: "",
 
-		// calls the modal to show up
-		modal: function() {
+		// Causes pop up for users to sign in with Google
 
-			// if user has created a theme and location already don't pull up the modal
+		googleSignIn: function() {
 
-			if (app.user == "" && app.userEmail == "") {
+			// Reminds users to allow pop ups if they aren't already
 
-				$('#myModal').modal({
+			$("#allowPopUps").html("Please allow pop ups so that you can sign in with Google.");
 
-					// can't exit modal by clicking background
-					backdrop: 'static',
+			var provider = new firebase.auth.GoogleAuthProvider();
 
-					// causes modal to show up
-					show: true
+			firebase.auth().signInWithPopup(provider).then(function(result) {
+				// This gives you a Google Access Token. You can use it to access the Google API.
+				var token = result.credential.accessToken;
+				
+				// The signed-in user info.
+				app.user = result.user;
+				
+				firebase.auth().onAuthStateChanged(function(user) {
+					// if there is a user add a logout button
+					if (app.user) {
 
-				}); // ends modal
+						// removes reminder to allow pop ups
+						$("#allowPopUps").html("");
 
-				// button to submit user name and email to firebase
+						app.userid = app.user.uid
 
-				app.setUserAndEmail();
+						var userRef = app.dataInfo.child(app.users);
 
-			} // ends if user has created a theme and location already don't pull up the modal
+						var useridRef = userRef.child(app.userid);
 
-		}, // ends modal function
+						useridRef.set({
+							user: app.user.displayName,
+							email: app.user.email,
+							emailVerified: app.user.emailVerified,
+							locations: "",
+							theme: "",
+							colorScheme: "",
+							food: ""
+						});
 
-		setUserAndEmail: function() {
+						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
+					} // end of if there is a user
+					else {
 
-			app.user = $('#user').val().trim().toLowerCase
+						userid = null;
 
-			// if a username is already in firebase load their data into local variables
+					} // end of else there is no user
+						
+				}); // end of auth state changed to add button to log out
 
+			}); // end of sign in with google popup
 
+		}, // end of googleSignIn function
 
-			// else create a username in firebase
+		// signs the user out of their google login
 
-		}, // end of setUserAndEmail function
+		googleSignOut: function() {
+
+			// When the user clicks the log out butto they will sign out of their google account on this site
+
+			$('#auth').on('click', function() {
+
+				firebase.auth().signOut().then(function() {
+				  // Sign-out successful.
+				  console.log('You have signed out');
+				}, function(error) {
+				  // An error happened.
+				});
+
+			}); // end of #auth on click
+
+		}, // end of googleSignOut function
 
 		firebaseToLocal: function() {
 
 			app.dataInfo.on('value', function(snapshot) {
 
 				console.log(snapshot.val());
+				app.userEmail = snapshot.val().users.app.userid.email;
+				console.log(app.userEmail);
+
 
 			});
 
@@ -131,37 +176,18 @@ $(document).ready(function(){
 
 	} // End of app object
 
-	var provider = new firebase.auth.GoogleAuthProvider();
 
-	firebase.auth().signInWithPopup(provider).then(function(result) {
-		// This gives you a Google Access Token. You can use it to access the Google API.
-		var token = result.credential.accessToken;
-		console.log(token);
-		// The signed-in user info.
-		app.user = result.user;
-		console.log(app.user);
-		console.log(app.user.uid);
-		firebase.auth().onAuthStateChanged(function(user) {
-			// if there is a user add a logout button
-			if (app.user) {
-				userid = app.user.uid
-				$('#auth').html('<a class="waves-effect waves-light btn" id="logout">Logout</a>')
-			} // end of if there is a user
-			else {
-				userid = null;
-			} // end of else there is no user
-				
-			console.log(userid);
-		}); // end of auth state changed to add button to log out
+	// Creates pop up to allow users to sign in with Google
 
-	}); // end of sign in with google popup
+	app.googleSignIn();
 
+	// Lets user sign out of the app
 
+	app.googleSignOut();
 
+	// sets local variables to match firebase
 
-	// modal pops up
-
-	// app.modal();
+	app.firebaseToLocal();
 
 	// enable search buttons
 
