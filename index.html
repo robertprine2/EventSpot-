@@ -6,6 +6,9 @@
     <script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
     <link rel="SHORTCUT ICON" href="assets/images/favicon.ico">
     <link rel="icon" href="assets/images/favicon.ico" type="image/ico">
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Expletus+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
     <script>
@@ -27,77 +30,64 @@
 
 <body>
 
-    <div id="myModal" class="modal fade">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">Event Preferences</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <p>User Name</p><br>
-                        <div class="form">
-                            <input type="text" placeholder="Batman" id="user"><br>
-                        </div><br>
-                        <p id="errorUser"></p><br>
-                        
-                        <p>Email</p><br>
-                        <div class="form">
-                            <input type="text" placeholder="masquerade" id="email"><br>
+    <nav>
+        <ul class="nav nav-pills">
+            <li role="presentation"><a href="#about" class="pill-color top-margin">Venues</a></li>
+            <li role="presentation"><a href="#skills" class="pill-color top-margin">Decorations</a></li>
+            <li role="presentation"><a href="#" class="pill-color initials"></a></li>
+            <li role="presentation"><a href="#portfolio" class="pill-color top-margin">Outfits</a></li>
+            <li role="presentation"><a href="#contact" class="pill-color top-margin">Catering</a></li>
+        </ul>
+    </nav>
+    
+    <div class="Jumbotron">
+        <div class="container">
+            <h1>.</h1>
+            <p>.</p>
+            <p id="auth"></p>
+        </div>
+        <a name="about"></a>
+    </div>
+
+    <div class="container-fluid black-bkgd">
+        
+        <div class="row row-centered">
+            <div class="col-md-12">
+                <div class="row row-centered">
+                    <div class="col-md-12">
+                        <p id="allowPopUps"></p>
+                        <h2>Venues</h2>
+                        <div id="Venue">
+                            <form>
+                                <p>Please enter the five digit Zip Code of where you would like to hold the event.</p><br>
+                                <div>
+                                    <input  class="rounded" type="text" placeholder="00000" id="zip"><br>
+                                </div><br>
+                                <p id="errorZip"></p><br>
+                                
+                                <input id="searchZip" class="button-white" type="submit" value="Search ZIP Code">
+                            </form>
                         </div>
-                        <p id="errorEmail"></p><br>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="setLT">Save Theme and Location</button>
+                <div class="row row-centered">
+                    <div class="col-md-8 col-md-offset-2">
+                        <img src="assets/images/location.png" class="img-circle" title="Robert Prine" alt="Robert Prine">
+                        <!-- this is an empty div -->
+                    </div>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-<div class="jumbotron">
-  <h1>.</h1>
-  </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <p id="allowPopUps"></p>
+                <div class="row row-centered">
+                    <!-- this is an empty div -->
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <img src="assets/images/logoeventspot.png" class="auth-image" alt="Your Name">
-            <div class="col-sm-4">
-            </div>
-
-            <nav class="col-sm-8 text-right">
-                <p>newest</p>
-                <p>catalogue</p>
-                <p>contact</p>  
-                <p id="auth"></p>
-            </nav>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-4">
-                <div id="Venue">
-                    <form>
-                        <p>Please enter the five digit Zip Code of where you would like to hold the event.</p><br>
-                        <div>
-                            <input  class="rounded" type="text" placeholder="00000" id="zip"><br>
-                        </div><br>
-                        <p id="errorZip"></p><br>
-                        
-                        <input id="searchZip" class="button-white" type="submit" value="Search ZIP Code">
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-sm-4">
+    <div class="container-fluid white-bkgd">
+        <a name="skills"></a>
+        <div class="row row-centered">
+            <div class="col-md-12">
+                <h2>Decorations</h2>
                 <div id="Decorations">
                     <form>
                         <p>Please enter the theme for your event.</p><br>
@@ -109,15 +99,83 @@
                         <input id="searchTheme" class="button-white" type="submit" value="Search Theme">
                     </form>
 
-                    <div id="ebayDecorationResults"></div>
+                    <div id="ebayDecorationResults">
+
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="col-sm-4">
+        <div class="row row-centered">
+            <div class="col-md-2 col-md-offset-2 col-sm-12">
+                <!-- This is an empty div -->
+            </div>
+        </div>
+
+        <div class="row row-centered">
+            <div class="col-md-12">
+                <!-- this is an empty div -->
+            </div>
+        </div>
+
+        <div class="row row-centered">
+            <div class="col-md-8 col-md-offset-2">
+                <!-- this is an empty div -->
+            </div>
+        </div>
+
+        <div class="row row-centered">
+            <div class="col-md-8 col-md-offset-2">
+                <!-- this is an empty div -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container black-bkgd">
+        <a name="portfolio"></a>
+        <div class="row row-centered">
+            <div class="col-md-12">
+                <h2>Outfits</h2>
                 <div id="Outfits">
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container-fluid white-bkgd">
+        <a name="contact"></a>
+        <div class="row row-centered">
+            <div class="col-md-8 col-md-offset-2">
+                <h2>Catering</h2>
+                <!-- this is an empty div -->
+            </div>
+        </div>  
+
+        <div class="row row-centered rowmargin">
+            <div class="col-md-12">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="exampleInputName2">Name</label>
+                        <input type="text" class="form-control rounded" id="exampleInputName2" placeholder="Bruce Wayne">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail2">Email</label>
+                        <input type="email" class="form-control rounded" id="exampleInputEmail2" placeholder="IamBatman@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea class="form-control rounded" id="exampleInputEmail2" name="message" placeholder="You're hired!" required="required"></textarea>
+                    </div>
+                </form>
+            </div>
+        </div>  
+
+        <div class="row row-centered rowmargin">
+            <div class="col-md-12 col-centered button button-white">
+                    <p><i class="fa fa-paper-plane-o"></i> Send</p>
+            </div>
+        </div>  
+    
     </div>
 
     <div>
