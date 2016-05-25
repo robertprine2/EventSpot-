@@ -4,11 +4,23 @@ $(document).ready(function(){
 
 		// variable for firebase app
 
-		dataInfo: new Firebase("https://eventspot.firebaseio.com/"),
+		dataInfo: new Firebase("https://eventspot-a7503.firebaseio.com/"),
+
+		// variable for the google object that has user information
+
+		user: undefined,
+
+		// ******* only use this if userid can't work ******the user number since userid is too hard to pull data down from firebase with
+
+		userNumber: 1,
+
+		// firebase child
+
+		users: "users",
 
 		// user ID variable to make an object in firebase
 
-		user: undefined,
+		userid: "",
 
 		// user email variable to be put into the userID object in firebase
 
@@ -22,48 +34,109 @@ $(document).ready(function(){
 
 		theme: "",
 
-		// calls the modal to show up
-		modal: function() {
+		// array where ebay api will store decoration searches
 
-			// if user has created a theme and location already don't pull up the modal
+		decorationArray: [],
 
-			if (app.user == "" && app.userEmail == "") {
+		// array where ebay api will store outfit searches
 
-				$('#myModal').modal({
+		outfitArray: [],
 
-					// can't exit modal by clicking background
-					backdrop: 'static',
+		// array where googlemaps api will store venues
 
-					// causes modal to show up
-					show: true
+		venueArray: [],
 
-				}); // ends modal
+		// Causes pop up for users to sign in with Google
 
-				// button to submit user name and email to firebase
+		googleSignIn: function() {
 
-				app.setUserAndEmail();
+			// Reminds users to allow pop ups if they aren't already
 
-			} // ends if user has created a theme and location already don't pull up the modal
+			$("#allowPopUps").html("Please allow pop ups so that you can sign in with Google.");
 
-		}, // ends modal function
+			var provider = new firebase.auth.GoogleAuthProvider();
 
-		setUserAndEmail: function() {
+			firebase.auth().signInWithPopup(provider).then(function(result) {
+				// This gives you a Google Access Token. You can use it to access the Google API.
+				var token = result.credential.accessToken;
+				
+				// The signed-in user info.
+				app.user = result.user;
+				
+				firebase.auth().onAuthStateChanged(function(user) {
+					// if there is a user add a logout button
+					console.log(user);
+					if (user) {
 
-			app.user = $('#user').val().trim().toLowerCase
+						// removes reminder to allow pop ups
+						$("#allowPopUps").html("");
 
-			// if a username is already in firebase load their data into local variables
+						app.userid = app.user.uid
+						console.log(app.userid);
+						var userRef = app.dataInfo.child(app.users);
 
+						var useridRef = userRef.child(app.userid);
 
+						// sets local variables to match firebase
 
-			// else create a username in firebase
+						app.firebaseToLocal();
 
-		}, // end of setUserAndEmail function
+						useridRef.set({
+							user: app.user.displayName,
+							email: app.user.email,
+							emailVerified: app.user.emailVerified,
+							locations: "",
+							theme: "",
+							colorScheme: "",
+							food: ""
+						});
+
+						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
+
+						
+
+					} // end of if there is a user
+					else {
+						alert('you signed out')
+
+						userid = null;
+
+					} // end of else there is no user
+						
+				}); // end of auth state changed to add button to log out
+
+			}); // end of sign in with google popup
+
+		}, // end of googleSignIn function
+
+		// *********signs the user out of their google login
+
+		googleSignOut: function() {
+
+			// When the user clicks the log out butto they will sign out of their google account on this site
+
+			$('#auth').on('click', function() {
+
+				firebase.auth().signOut().then(function(one, two) {
+				  // Sign-out successful.
+				}, function(error) {
+				  // An error happened.
+				  console.log(error)
+				});
+
+			}); // end of #auth on click
+
+		}, // end of googleSignOut function
 
 		firebaseToLocal: function() {
 
 			app.dataInfo.on('value', function(snapshot) {
 
 				console.log(snapshot.val());
+				console.log(app.userid);
+				app.userEmail = snapshot.val().users[app.userid].email;
+				console.log(app.userEmail);
+
 
 			});
 
@@ -129,44 +202,92 @@ $(document).ready(function(){
 
 		}, // end setTheme function
 
+		ebayAPI: function() {
+
+			// Construct the request
+			// Replace MyAppID with your Production AppID
+			var url = "http://svcs.ebay.com/services/search/FindingService/v1";
+			    url += "?OPERATION-NAME=findItemsByKeywords";
+			    url += "&SERVICE-VERSION=1.0.0";
+			    url += "&SECURITY-APPNAME=RobertPr-EventSpo-PRD-b4d8cb02c-ac0b9e0f";
+			    url += "&GLOBAL-ID=EBAY-US";
+			    url += "&RESPONSE-DATA-FORMAT=JSON";
+			    url += "&REST-PAYLOAD";
+			    url += "&keywords=harry%20potter";
+			    url += "&paginationInput.entriesPerPage=3";
+
+			$("#searchTheme").on('click', function() {
+				if ('#theme' == "") {
+					// remind user to type something in the search box
+					$("#errorTheme").html("Please enter a theme for your event.");
+				} // end of if nothing is typed in #theme
+
+				else {
+					// remove error message for typing nothing
+					$("#errorTheme").html("");
+
+					// call ebay API
+
+					$.ajax({url: url, method: 'GET', dataType: 'jsonp'}).done(function(response) {
+
+						console.log(response);
+
+						var items = response.findItemsByKeywordsResponse[0].searchResult[0].item || [];
+
+						// for loop that makes results for top 10 -- this could be changed to more or less results
+
+						for (var i = 0; i < items.length; i++) {
+
+							var item = items[i];
+
+							var title = item.title;
+
+							var pic = item.galleryURL;
+
+							var viewitem = item.viewItemURL;
+
+							if (null != title && null != viewitem) {
+
+								app.decorationArray.push('<div class="decoration">' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
+
+							} // end of if there is a result from ebay
+
+							// put ebay API decoration results onto webpage
+
+							$('#ebayDecorationResults').prepend(app.decorationArray)
+
+						} // end of for loop to create results
+
+					}); // end of ajax call to ebay
+
+				} // end of else something in theme
+
+
+			}); // end of #searchTheme click
+
+		},
+
 	} // End of app object
 
-	var provider = new firebase.auth.GoogleAuthProvider();
 
-	firebase.auth().signInWithPopup(provider).then(function(result) {
-		// This gives you a Google Access Token. You can use it to access the Google API.
-		var token = result.credential.accessToken;
-		console.log(token);
-		// The signed-in user info.
-		app.user = result.user;
-		console.log(app.user);
-		console.log(app.user.uid);
-		firebase.auth().onAuthStateChanged(function(user) {
-			// if there is a user add a logout button
-			if (app.user) {
-				userid = app.user.uid
-				$('#auth').html('<a class="waves-effect waves-light btn" id="logout">Logout</a>')
-			} // end of if there is a user
-			else {
-				userid = null;
-			} // end of else there is no user
-				
-			console.log(userid);
-		}); // end of auth state changed to add button to log out
+	// Creates pop up to allow users to sign in with Google
 
-	}); // end of sign in with google popup
+	app.googleSignIn();
 
+	// Lets user sign out of the app
 
+	app.googleSignOut();
 
-
-	// modal pops up
-
-	// app.modal();
+	
 
 	// enable search buttons
 
 	app.setLocation();
 
 	app.setTheme();
+
+	app.ebayAPI();
+
+
 
 }); // End document.ready function
