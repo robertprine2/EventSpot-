@@ -155,3 +155,12 @@ footer {
      transform:scale(1.5);
      z-index: +10;
 }
+
+footer {
+  font-size: 16px;
+}
+
+#teamLogo {
+  height: 30px;
+  margin-left: 5px;
+}
