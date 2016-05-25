@@ -6,7 +6,13 @@ $(document).ready(function(){
 
 		dataInfo: new Firebase("https://eventspot-a7503.firebaseio.com/"),
 
+		// variable for the google object that has user information
+
 		user: undefined,
+
+		// ******* only use this if userid can't work ******the user number since userid is too hard to pull data down from firebase with
+
+		userNumber: 1,
 
 		// firebase child
 
@@ -28,6 +34,18 @@ $(document).ready(function(){
 
 		theme: "",
 
+		// array where ebay api will store decoration searches
+
+		decorationArray: [],
+
+		// array where ebay api will store outfit searches
+
+		outfitArray: [],
+
+		// array where googlemaps api will store venues
+
+		venueArray: [],
+
 		// Causes pop up for users to sign in with Google
 
 		googleSignIn: function() {
@@ -47,16 +65,21 @@ $(document).ready(function(){
 				
 				firebase.auth().onAuthStateChanged(function(user) {
 					// if there is a user add a logout button
-					if (app.user) {
+					console.log(user);
+					if (user) {
 
 						// removes reminder to allow pop ups
 						$("#allowPopUps").html("");
 
 						app.userid = app.user.uid
-
+						console.log(app.userid);
 						var userRef = app.dataInfo.child(app.users);
 
 						var useridRef = userRef.child(app.userid);
+
+						// sets local variables to match firebase
+
+						app.firebaseToLocal();
 
 						useridRef.set({
 							user: app.user.displayName,
@@ -69,8 +92,12 @@ $(document).ready(function(){
 						});
 
 						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
+
+						
+
 					} // end of if there is a user
 					else {
+						alert('you signed out')
 
 						userid = null;
 
@@ -82,7 +109,7 @@ $(document).ready(function(){
 
 		}, // end of googleSignIn function
 
-		// signs the user out of their google login
+		// *********signs the user out of their google login
 
 		googleSignOut: function() {
 
@@ -90,11 +117,11 @@ $(document).ready(function(){
 
 			$('#auth').on('click', function() {
 
-				firebase.auth().signOut().then(function() {
+				firebase.auth().signOut().then(function(one, two) {
 				  // Sign-out successful.
-				  console.log('You have signed out');
 				}, function(error) {
 				  // An error happened.
+				  console.log(error)
 				});
 
 			}); // end of #auth on click
@@ -106,7 +133,8 @@ $(document).ready(function(){
 			app.dataInfo.on('value', function(snapshot) {
 
 				console.log(snapshot.val());
-				app.userEmail = snapshot.val().users.app.userid.email;
+				console.log(app.userid);
+				app.userEmail = snapshot.val().users[app.userid].email;
 				console.log(app.userEmail);
 
 
@@ -174,6 +202,71 @@ $(document).ready(function(){
 
 		}, // end setTheme function
 
+		ebayAPI: function() {
+
+			// Construct the request
+			// Replace MyAppID with your Production AppID
+			var url = "http://svcs.ebay.com/services/search/FindingService/v1";
+			    url += "?OPERATION-NAME=findItemsByKeywords";
+			    url += "&SERVICE-VERSION=1.0.0";
+			    url += "&SECURITY-APPNAME=RobertPr-EventSpo-PRD-b4d8cb02c-ac0b9e0f";
+			    url += "&GLOBAL-ID=EBAY-US";
+			    url += "&RESPONSE-DATA-FORMAT=JSON";
+			    url += "&REST-PAYLOAD";
+			    url += "&keywords=harry%20potter";
+			    url += "&paginationInput.entriesPerPage=3";
+
+			$("#searchTheme").on('click', function() {
+				if ('#theme' == "") {
+					// remind user to type something in the search box
+					$("#errorTheme").html("Please enter a theme for your event.");
+				} // end of if nothing is typed in #theme
+
+				else {
+					// remove error message for typing nothing
+					$("#errorTheme").html("");
+
+					// call ebay API
+
+					$.ajax({url: url, method: 'GET', dataType: 'jsonp'}).done(function(response) {
+
+						console.log(response);
+
+						var items = response.findItemsByKeywordsResponse[0].searchResult[0].item || [];
+
+						// for loop that makes results for top 10 -- this could be changed to more or less results
+
+						for (var i = 0; i < items.length; i++) {
+
+							var item = items[i];
+
+							var title = item.title;
+
+							var pic = item.galleryURL;
+
+							var viewitem = item.viewItemURL;
+
+							if (null != title && null != viewitem) {
+
+								app.decorationArray.push('<div class="decoration">' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
+
+							} // end of if there is a result from ebay
+
+							// put ebay API decoration results onto webpage
+
+							$('#ebayDecorationResults').prepend(app.decorationArray)
+
+						} // end of for loop to create results
+
+					}); // end of ajax call to ebay
+
+				} // end of else something in theme
+
+
+			}); // end of #searchTheme click
+
+		},
+
 	} // End of app object
 
 
@@ -185,14 +278,16 @@ $(document).ready(function(){
 
 	app.googleSignOut();
 
-	// sets local variables to match firebase
-
-	app.firebaseToLocal();
+	
 
 	// enable search buttons
 
 	app.setLocation();
 
 	app.setTheme();
+
+	app.ebayAPI();
+
+
 
 }); // End document.ready function
