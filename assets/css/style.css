@@ -257,6 +257,15 @@ img {
   margin-bottom: 30px;
 }
 
+.pop{
+  color: black;
+
+}
+
+.pop h1{
+  font-size: 18px;
+}
+
 .positioning {
   margin: auto;
   float: none;
