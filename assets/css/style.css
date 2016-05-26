@@ -82,6 +82,11 @@ p {
     border-radius: 30%;
 }
 
+#map{
+  height: 500px;
+  border-radius: 35px;
+}
+
 /* Navigation Bar */
 
 nav {
