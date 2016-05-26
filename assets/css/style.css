@@ -463,6 +463,13 @@ footer {
   cursor: pointer;
 }
 
+/* Search Results */
+
+#close {
+  float: right;
+  margin-right: 100px;
+}
+
 /* Social Icons */
 
 .socIcon {

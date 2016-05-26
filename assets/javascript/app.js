@@ -248,7 +248,7 @@ $(document).ready(function(){
 
 							if (null != title && null != viewitem) {
 
-								app.decorationArray.push('<div class="decoration">' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
+								app.decorationArray.push('<i id="close" class="fa fa-times-circle-o" aria-hidden="true"></i>' + '<div class="decoration">' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
 
 							} // end of if there is a result from ebay
 
