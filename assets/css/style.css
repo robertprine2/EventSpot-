@@ -82,6 +82,11 @@ p {
     border-radius: 30%;
 }
 
+#map{
+  height: 500px;
+  border-radius: 35px;
+}
+
 /* Navigation Bar */
 
 nav {
@@ -431,6 +436,8 @@ footer {
   -webkit-border-radius: 30px;
   border-radius: 30px;
   padding: 5px;
+  text-align: center;
+  color: black;
 }
 
 .button-white{
@@ -455,6 +462,7 @@ footer {
 .button-white a {
    text-decoration: none;
    color: black;
+   outline-width: 0;
 }
  
  .button-white:hover {
@@ -468,6 +476,11 @@ footer {
 .close {
   float: right;
   margin-right: 100px;
+}
+
+#searchTheme, #searchZip{
+  font-size: 20px;
+  line-height: 22px;
 }
 
 /* Social Icons */

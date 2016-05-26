@@ -9,6 +9,9 @@
     <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Expletus+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.3.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="assets/javascript/event.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
     <script>
@@ -26,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 
 <body>
@@ -65,13 +69,13 @@
                                 </div><br>
                                 <p id="errorZip"></p><br>
                                 
-                                <input id="searchZip" class="button-white" type="submit" value="Search ZIP Code">
+                                <button id="searchZip" class="button-white" type="button">Submit</button>
                             </form>
                         </div>
                     </div>
-                </div>
+                </div><br>
                 <div class="row row-centered">
-                    <div class="col-md-8 col-md-offset-2">
+                    <div class="col-md-8 col-md-offset-2" id="map">
                         <img src="assets/images/location.png" class="img-circle" title="Robert Prine" alt="Robert Prine">
                         <!-- this is an empty div -->
                     </div>
@@ -164,7 +168,7 @@
                     </div>
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea class="form-control rounded" id="exampleInputEmail2" name="message" placeholder="You're hired!" required="required"></textarea>
+                        <textarea class="form-control rounded message" id="exampleInputEmail2" name="message" placeholder="You're hired!" required="required"></textarea>
                     </div>
                 </form>
             </div>
@@ -174,7 +178,7 @@
             <div class="col-md-12 col-centered button button-white">
                     <p><i class="fa fa-paper-plane-o"></i> Send</p>
             </div>
-        </div>  
+        </div> <br> 
     
     </div>
 
@@ -196,8 +200,10 @@
         <img id="teamLogo" src="assets/images/3rn.png"><br>
         <p>&copy; Copyright 2016</p> 
     </footer>
-    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfL_mCPMMw-Yxs3YtuzEtkZDRWY3fLt8g"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
     <script src="assets/javascript/app.js"></script>
+
 </body>
 </html>
