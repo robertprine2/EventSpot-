@@ -89,7 +89,7 @@ $(document).ready(function(){
 							food: ""
 						}); // end of userInfoRef set
 
-						// sets decorationArray as an empty array
+						
 
 						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
 
@@ -120,6 +120,8 @@ $(document).ready(function(){
 		}, // end of googleSignIn function
 
 		updateArrays: function() {
+
+			// sets decorationArray as an empty array
 
 			console.log(app.decorationArray);
 
@@ -160,9 +162,12 @@ $(document).ready(function(){
 				// app.outfitArray = 
 				// app.venueArray = 
 
-		
+				// populate arrays on firebase
+				
+				app.updateArrays();
 		
 			}); // end of dataInfo on value
+
 
 		}, // end of firebaseToLocal function
 
@@ -272,7 +277,7 @@ $(document).ready(function(){
 
 							if (null != title && null != viewitem) {
 
-								newDiv = '<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
+								var newDiv = '<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
 
 								app.decorationArray.push(newDiv);
 
@@ -349,10 +354,6 @@ $(document).ready(function(){
 	// Lets user sign out of the app
 
 	app.googleSignOut();
-
-	// populate arrays on firebase
-
-	app.updateArrays();
 
 	// enable search buttons
 
