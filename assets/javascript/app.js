@@ -72,7 +72,7 @@ $(document).ready(function(){
 						$("#allowPopUps").html("");
 
 						app.userid = app.user.uid
-						console.log(app.userid);
+						
 						var userRef = app.dataInfo.child(app.users);
 
 						var useridRef = userRef.child(app.userid);
@@ -252,11 +252,23 @@ $(document).ready(function(){
 
 							} // end of if there is a result from ebay
 
-							// put ebay API decoration results onto webpage
-
-							$('#ebayDecorationResults').prepend(app.decorationArray)
-
 						} // end of for loop to create results
+
+						// save decorationArray to firebase
+
+						var userRef = app.dataInfo.child(app.users);
+
+						var useridRef = userRef.child(app.userid);
+
+						var decorationArrayRef = useridRef.child("decorationArray");
+
+						decorationArrayRef.set({
+							decoration: app.decorationArray
+						});
+
+						// put ebay API decoration results onto webpage
+
+						$('#ebayDecorationResults').prepend(app.decorationArray)
 
 					}); // end of ajax call to ebay
 
@@ -265,7 +277,13 @@ $(document).ready(function(){
 
 			}); // end of #searchTheme click
 
-		},
+		}, // end of ebayAPI function
+
+		ebayFirebase: function() {
+
+
+
+		}, // end of ebayFirebase
 
 	} // End of app object
 
