@@ -1,0 +1,190 @@
+/* general css */
+
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:center;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+strong, b, strong *, b * {
+	font-weight: bold;
+}
+	/*This needs to be added since the reset messes up my html bold/italic*/
+
+em, i, em *, i * {
+	font-style: italic;
+}
+
+body {
+	background: lightblue;
+	font-family: 'Indie Flower', cursive;
+	padding-top: 60px;
+}
+
+.black-bkgd {
+	background: black;
+	color: white;
+	margin-bottom: 30px;
+}
+
+.white-bkgd {
+	background: white;
+	color: black;
+	margin-bottom: 30px;
+}
+
+.rowmargin {
+	margin-top: 50px;
+}
+
+h2 {
+	font-size: 40px;
+	margin-bottom: 50px;
+	margin-top: 50px;
+	font-family: 'Cinzel', serif;
+}
+
+p {
+	font-size: 25px;
+	margin-bottom: 20px;
+	line-height: 1.2;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.button-black {
+	width: 250px;  
+	height: 50px;  
+	color: #d1d2d3;
+	text-align: center;   
+	line-height: 50px;
+	background: black;
+	border: solid 2px #d1d2d3;
+	-moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+}
+ 
+ 
+.button-black p {
+	 font-size: 25px;
+	 line-height: 50px;
+}
+ 
+.button-black a {
+	 text-decoration: none;
+	 color: white;
+}
+ 
+.button-black:hover {
+	 border: solid 2px white;
+	 color: white;
+	 cursor: pointer;
+}
+
+.button-white{
+	width: 250px;  
+	height: 50px;  
+	color: #908d8d;
+	text-align: center;   
+	line-height: 50px;
+	background: white;
+	border: solid 2px #908d8d;
+	-moz-border-radius: 30px;
+	-webkit-border-radius: 30px;
+	border-radius: 30px;
+}
+
+.button-white p {
+	 font-size: 25px;
+	 line-height: 50px;
+}
+ 
+.button-white a {
+	 text-decoration: none;
+	 color: black;
+}
+ 
+ .button-white:hover {
+	border: solid 2px black;
+	color: black;
+	cursor: pointer;
+}
+
+/* Navbar */
+
+#nav {
+	font-family: 'Cinzel', serif;
+	text-align: center;
+	font-size: 50px;
+	margin-bottom: 50px;
+}
+
+/* Jumbotron */
+
+#dust {
+	background: url("../images/dust.png");
+	background-size: 100% 500px;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: auto;
+	height: 500px;
+	width: 100%;
+}
+
+.Jumbotron h1 {
+	font-size: 60px;
+	color: white;
+	position: relative;
+	top: 260px;
+	font-weight: 900;
+	width: 100%;
+	text-align: right;
+	padding-right: 30px;
+}
+
+.Jumbotron p {
+	font-size: 30px;
+	color: white;
+	position: relative;
+	top: 310px;
+	font-weight: 800;
+	width: 100%;
+	text-align: right;
+	padding-right: 30px;
+}
+
+/* Project Information/Read Me */
+
+.info {
+	background-color: white;
+	padding-top: 30px;
+}
+
+.info h2, .info p {
+	text-align: left;
+}
+
+/* Media Queries */
+
+@media screen and (max-width:640px) {
+
+}
+
+@media screen and (min-width:641px) and (max-width:768px){
+
+}
+
+@media screen and (min-width: 769px) and (max-width:980px){
+
+}

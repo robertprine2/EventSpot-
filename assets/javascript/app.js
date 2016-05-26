@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $(document).ready(function(){
 
 	var app = {
@@ -213,7 +214,7 @@ $(document).ready(function(){
 			    url += "&GLOBAL-ID=EBAY-US";
 			    url += "&RESPONSE-DATA-FORMAT=JSON";
 			    url += "&REST-PAYLOAD";
-			    url += "&keywords=harry%20potter";
+			    url += "&keywords=parties%20potter";
 			    url += "&paginationInput.entriesPerPage=3";
 
 			$("#searchTheme").on('click', function() {
@@ -291,3 +292,5 @@ $(document).ready(function(){
 
 
 }); // End document.ready function
+=======
+>>>>>>> 2ffb2b939552ed55244569155d56cefafade8a44
