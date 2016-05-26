@@ -10,10 +10,6 @@ $(document).ready(function(){
 
 		user: undefined,
 
-		// ******* only use this if userid can't work ******the user number since userid is too hard to pull data down from firebase with
-
-		userNumber: 1,
-
 		// firebase child
 
 		users: "users",
@@ -91,6 +87,14 @@ $(document).ready(function(){
 							food: ""
 						});
 
+						// sets decorationArray as an empty array
+
+						var decorationArrayRef = useridRef.child("decorationArray");
+
+						decorationArrayRef.set({
+							decoration: app.decorationArray
+						});
+
 						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
 
 						
@@ -136,9 +140,15 @@ $(document).ready(function(){
 				console.log(app.userid);
 				app.userEmail = snapshot.val().users[app.userid].email;
 				console.log(app.userEmail);
+				app.zip = snapshot.val().users[app.userid].zip;
+				app.theme = snapshot.val().users[app.userid].theme;
+				app.decorationArray = snapshot.val().users[app.userid].decorationArray.decoration;
+				// app.outfitArray = 
+				// app.venueArray = 
 
-
-			});
+		
+		
+			}); // end of dataInfo on value
 
 		}, // end of firebaseToLocal function
 
@@ -248,7 +258,9 @@ $(document).ready(function(){
 
 							if (null != title && null != viewitem) {
 
-								app.decorationArray.push('<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + i + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
+								newDiv = '<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
+
+								app.decorationArray.push(newDiv);
 
 							} // end of if there is a result from ebay
 
@@ -288,10 +300,11 @@ $(document).ready(function(){
 			// when you click the x at the top right of a result
 
 			$(document).on('click', '.close', function() {
-				console.log($(this).data('index'));
-				console.log(app.decorationArray);
+				
+				// removes the result tied to the x from the array
+
 				app.decorationArray.splice($(this).data('index'), 1, "");
-				console.log(app.decorationArray);
+				
 				// save decorationArray to firebase
 
 				var userRef = app.dataInfo.child(app.users);
@@ -304,7 +317,7 @@ $(document).ready(function(){
 					decoration: app.decorationArray
 				});
 
-				// put ebay API decoration results onto webpage
+				// put ebay API decoration results onto webpage over the old ones
 
 				$('#ebayDecorationResults').html(app.decorationArray)
 
