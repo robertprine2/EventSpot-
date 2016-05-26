@@ -41,7 +41,7 @@ $(document).on('click', "#searchZip", function(){
 	//var queryURL1 = "https://maps.googleapis.com/maps/api/geocode/jsonp?address=" + fourSquare.zipCode + "&key=AIzaSyDA2W0021lf_Hnz7TA2KA027IGRRfJypsQ";
 	
 	//API call to the google map geocoder - used to get the users zip code and convert it to a lat/lng to supply to firebase API
-	zip = app.zip;
+	zip = $('#zip').val();
 	//zip=fourSquare.zipCode;
 	var queryURL1 = "https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyDA2W0021lf_Hnz7TA2KA027IGRRfJypsQ";
 	$.ajax({
