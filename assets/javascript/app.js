@@ -10,10 +10,6 @@ $(document).ready(function(){
 
 		user: undefined,
 
-		// ******* only use this if userid can't work ******the user number since userid is too hard to pull data down from firebase with
-
-		userNumber: 1,
-
 		// firebase child
 
 		users: "users",
@@ -72,16 +68,18 @@ $(document).ready(function(){
 						$("#allowPopUps").html("");
 
 						app.userid = app.user.uid
-						console.log(app.userid);
+						
 						var userRef = app.dataInfo.child(app.users);
 
 						var useridRef = userRef.child(app.userid);
+
+						var userInfoRef = useridRef.child("userInfo");
 
 						// sets local variables to match firebase
 
 						app.firebaseToLocal();
 
-						useridRef.set({
+						userInfoRef.set({
 							user: app.user.displayName,
 							email: app.user.email,
 							emailVerified: app.user.emailVerified,
@@ -89,25 +87,49 @@ $(document).ready(function(){
 							theme: "",
 							colorScheme: "",
 							food: ""
-						});
-
-						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
+						}); // end of userInfoRef set
 
 						
 
+						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
+
+						var userUpdateRef = useridRef.child("Number");
+
+						var rand = Math.random();
+
+						userUpdateRef.set({
+
+							updateNum: rand
+
+						}); // end of userUpdateRef set
+
 					} // end of if there is a user
+
 					else {
-						alert('you signed out')
 
 						userid = null;
 
 					} // end of else there is no user
+
+					// put ebay API decoration results onto webpage
 						
 				}); // end of auth state changed to add button to log out
 
 			}); // end of sign in with google popup
 
 		}, // end of googleSignIn function
+
+		updateArrays: function() {
+
+			// sets decorationArray as an empty array
+
+			console.log(app.decorationArray);
+
+			$('#ebayDecorationResults').html(app.decorationArray)
+
+			app.closeResult();
+
+		}, // end of updateArrays function
 
 		// *********signs the user out of their google login
 
@@ -132,13 +154,20 @@ $(document).ready(function(){
 
 			app.dataInfo.on('value', function(snapshot) {
 
-				console.log(snapshot.val());
-				console.log(app.userid);
 				app.userEmail = snapshot.val().users[app.userid].email;
-				console.log(app.userEmail);
+				app.zip = snapshot.val().users[app.userid].zip;
+				app.theme = snapshot.val().users[app.userid].theme;
+				app.decorationArray = snapshot.val().users[app.userid].decorationArray.decoration;
+				console.log(app.decorationArray);
+				// app.outfitArray = 
+				// app.venueArray = 
 
+				// populate arrays on firebase
+				
+				app.updateArrays();
+		
+			}); // end of dataInfo on value
 
-			});
 
 		}, // end of firebaseToLocal function
 
@@ -248,15 +277,31 @@ $(document).ready(function(){
 
 							if (null != title && null != viewitem) {
 
-								app.decorationArray.push('<div class="decoration">' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
+								var newDiv = '<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
+
+								app.decorationArray.push(newDiv);
 
 							} // end of if there is a result from ebay
 
-							// put ebay API decoration results onto webpage
-
-							$('#ebayDecorationResults').prepend(app.decorationArray)
-
 						} // end of for loop to create results
+
+						// save decorationArray to firebase
+
+						var userRef = app.dataInfo.child(app.users);
+
+						var useridRef = userRef.child(app.userid);
+
+						var decorationArrayRef = useridRef.child("decorationArray");
+
+						decorationArrayRef.set({
+							decoration: app.decorationArray
+						});
+
+						// put ebay API decoration results onto webpage
+
+						$('#ebayDecorationResults').html(app.decorationArray)
+
+						app.closeResult();
 
 					}); // end of ajax call to ebay
 
@@ -265,7 +310,39 @@ $(document).ready(function(){
 
 			}); // end of #searchTheme click
 
-		},
+		}, // end of ebayAPI function
+
+		// allows you to get rid of search results you don't want
+
+		closeResult: function() {
+
+			// when you click the x at the top right of a result
+
+			$(document).on('click', '.close', function() {
+				
+				// removes the result tied to the x from the array
+
+				app.decorationArray.splice($(this).data('index'), 1, "");
+				
+				// save decorationArray to firebase
+
+				var userRef = app.dataInfo.child(app.users);
+
+				var useridRef = userRef.child(app.userid);
+
+				var decorationArrayRef = useridRef.child("decorationArray");
+
+				decorationArrayRef.set({
+					decoration: app.decorationArray
+				});
+
+				// put ebay API decoration results onto webpage over the old ones
+
+				$('#ebayDecorationResults').html(app.decorationArray)
+
+			});
+
+		}, // end of closeResult function
 
 	} // End of app object
 
@@ -277,8 +354,6 @@ $(document).ready(function(){
 	// Lets user sign out of the app
 
 	app.googleSignOut();
-
-	
 
 	// enable search buttons
 

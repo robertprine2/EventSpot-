@@ -471,6 +471,13 @@ footer {
   cursor: pointer;
 }
 
+/* Search Results */
+
+.close {
+  float: right;
+  margin-right: 100px;
+}
+
 #searchTheme, #searchZip{
   font-size: 20px;
   line-height: 22px;
