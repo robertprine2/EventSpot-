@@ -248,7 +248,7 @@ $(document).ready(function(){
 
 							if (null != title && null != viewitem) {
 
-								app.decorationArray.push('<i id="close" class="fa fa-times-circle-o" aria-hidden="true"></i>' + '<div class="decoration">' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
+								app.decorationArray.push('<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + i + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>');
 
 							} // end of if there is a result from ebay
 
@@ -270,6 +270,8 @@ $(document).ready(function(){
 
 						$('#ebayDecorationResults').prepend(app.decorationArray)
 
+						app.closeResult();
+
 					}); // end of ajax call to ebay
 
 				} // end of else something in theme
@@ -279,11 +281,36 @@ $(document).ready(function(){
 
 		}, // end of ebayAPI function
 
-		ebayFirebase: function() {
+		// allows you to get rid of search results you don't want
 
+		closeResult: function() {
 
+			// when you click the x at the top right of a result
 
-		}, // end of ebayFirebase
+			$(document).on('click', '.close', function() {
+				console.log($(this).data('index'));
+				console.log(app.decorationArray);
+				app.decorationArray.splice($(this).data('index'), 1, "");
+				console.log(app.decorationArray);
+				// save decorationArray to firebase
+
+				var userRef = app.dataInfo.child(app.users);
+
+				var useridRef = userRef.child(app.userid);
+
+				var decorationArrayRef = useridRef.child("decorationArray");
+
+				decorationArrayRef.set({
+					decoration: app.decorationArray
+				});
+
+				// put ebay API decoration results onto webpage
+
+				$('#ebayDecorationResults').html(app.decorationArray)
+
+			});
+
+		}, // end of closeResult function
 
 	} // End of app object
 
