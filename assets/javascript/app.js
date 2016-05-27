@@ -125,11 +125,11 @@ $(document).ready(function(){
 
 			console.log(app.decorationArray);
 
-			$('#ebayDecorationResults').html(app.decorationArray)
+			$('#ebayDecorationResults').html(app.decorationArray);
 
 			app.closeResult();
 
-			$('#Outfits').html(app.outfitArray)
+			$('#Outfits').html(app.outfitArray);
 
 			app.closeOutfitResult();
 
@@ -163,8 +163,8 @@ $(document).ready(function(){
 				app.theme = snapshot.val().users[app.userid].theme;
 				app.decorationArray = snapshot.val().users[app.userid].decorationArray.decoration;
 				console.log(snapshot.val().users[app.userid]);
-				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfits;
-				// app.venueArray = 
+				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfit;
+				console.log(app.outfitArray);
 
 				// populate arrays on firebase
 
@@ -498,7 +498,7 @@ $(document).ready(function(){
 
 						if (null != title && null != viewitem) {
 
-							var newDiv = '<div class="outfit">' + '<i class="fa fa-times-circle-o closeO" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
+							var newDiv = '<div class="decoration">' + '<i class="fa fa-times-circle-o closeO" aria-hidden="true" data-index="' + app.outfitArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
 
 							app.outfitArray.push(newDiv);
 
