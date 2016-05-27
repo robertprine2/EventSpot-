@@ -61,7 +61,7 @@ $(document).ready(function(){
 				
 				firebase.auth().onAuthStateChanged(function(user) {
 					// if there is a user add a logout button
-					console.log(user);
+					
 					if (user) {
 
 						// removes reminder to allow pop ups
@@ -121,14 +121,12 @@ $(document).ready(function(){
 
 			// sets decorationArray as an empty array
 
-			console.log(app.decorationArray);
-
 			$('#ebayDecorationResults').html(app.decorationArray);
 
 			app.closeResult();
 
 			$('#outfits').html(app.outfitArray);
-			console.log(app.outfitArray);
+			
 			app.closeOutfitResult();
 
 		}, // end of updateArrays function
@@ -160,9 +158,7 @@ $(document).ready(function(){
 				app.zip = snapshot.val().users[app.userid].zip;
 				app.theme = snapshot.val().users[app.userid].theme;
 				app.decorationArray = snapshot.val().users[app.userid].decorationArray.decoration;
-				console.log(snapshot.val().users[app.userid]);
 				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfits;
-				console.log(app.outfitArray);
 
 				// populate arrays on firebase
 
@@ -248,16 +244,11 @@ $(document).ready(function(){
 
 			})
 			.done(function(response){
-			console.log(queryURL1);
-			console.log(response);
+		
 			var rawResults = response.results;
-			console.log(rawResults);
 
 			var zipLattitude = rawResults[0].geometry.location.lat;
 			var zipLongitude = rawResults[0].geometry.location.lng;
-			console.log(zipLattitude);
-			console.log(zipLongitude);
-			console.log(location);
 
 			//Begin of the Foursquare API call to get venue information. Foursquare doese not have zip code search
 			//Therefore, using google geocogding to convert lat/lng above and add the parsed latitude and longitude to the api key below
@@ -269,12 +260,8 @@ $(document).ready(function(){
 
 			})
 			.done(function(response){
-			console.log(queryURL);
-			console.log(response);
-			console.log(response);
+			
 			var results = response.response.venues;
-			//console.log(results[0].name);
-			//console.log(results.venues[0].location.lat);
 
 			//Iterating through the results from the Foursquare json data
 			for(var i = 0; i < results.length; i++){
@@ -285,9 +272,6 @@ $(document).ready(function(){
 
 				
 				latLng = new google.maps.LatLng(lattitude, longitude);
-
-				console.log(results[i].location.lat);
-				console.log(results[i].location.lng);
 
 				//Information for populating the infowindows for the map markers
 				fourSquare.markerVar = new google.maps.Marker({
@@ -302,8 +286,6 @@ $(document).ready(function(){
 						'</div>'
 
 			 });
-
-				console.log(fourSquare.markers);
 				
 				//Pushing the lat/lng to allLatLng array 
 				fourSquare.allLatLng.push(latLng);
@@ -311,11 +293,7 @@ $(document).ready(function(){
 				//Pushing markers to markers array
 				fourSquare.markers.push(fourSquare.markerVar);
 
-				console.log(fourSquare.markerHolder);
-
 			}
-
-				console.log(fourSquare.markers);
 
 			//For each function to iterate through array and attach infowindows to each of the map markers
 			fourSquare.markers.forEach(function(marker){
@@ -346,8 +324,10 @@ $(document).ready(function(){
 			$('#searchTheme').on('click', function() {
 
 				// sets what the user typed to theme variable
-				app.theme = $("#theme").val().trim();
-				console.log(app.theme);
+				var str = $("#theme").val().trim();
+
+				app.theme = str.replace(" ", "%20");
+				
 				// if theme has something written in it
 				if (app.theme != "") {
 
@@ -401,8 +381,6 @@ $(document).ready(function(){
 				// call ebay API
 
 				$.ajax({url: url, method: 'GET', dataType: 'jsonp'}).done(function(response) {
-
-					console.log(response);
 
 					var items = response.findItemsByKeywordsResponse[0].searchResult[0].item || [];
 
@@ -511,7 +489,7 @@ $(document).ready(function(){
 					var useridRef = userRef.child(app.userid);
 
 					var outfitArrayRef = useridRef.child("outfitArray");
-					console.log(app.outfitArray)
+					
 					outfitArrayRef.set({
 						outfits: app.outfitArray
 					});
