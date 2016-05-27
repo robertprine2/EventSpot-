@@ -345,7 +345,7 @@ $(document).ready(function(){
 
 				// sets what the user typed to theme variable
 				app.theme = $("#theme").val().trim();
-				
+				console.log(app.theme);
 				// if theme has something written in it
 				if (app.theme != "") {
 
@@ -369,7 +369,8 @@ $(document).ready(function(){
 		}, // end setTheme function
 
 		ebayAPI: function() {
-
+			
+			console.log('test', app.theme);
 			// Construct the request
 			// Replace MyAppID with your Production AppID
 			var url = "http://svcs.ebay.com/services/search/FindingService/v1";
@@ -379,7 +380,7 @@ $(document).ready(function(){
 			    url += "&GLOBAL-ID=EBAY-US";
 			    url += "&RESPONSE-DATA-FORMAT=JSON";
 			    url += "&REST-PAYLOAD";
-			    url += "&keywords=harry%20potter";
+			    url += "&keywords=" + app.theme + "%20decorations";
 			    url += "&paginationInput.entriesPerPage=3";
 
 			$("#searchTheme").on('click', function() {

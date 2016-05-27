@@ -136,7 +136,7 @@ nav li:hover {
 
 .initials:hover {
   background: url("../images/logoeventspot.png");
-  background-size: 50px 50px;
+  background-size: 70px 50px;
     background-repeat: no-repeat;
     background-position: center;
     margin: auto;
@@ -147,7 +147,7 @@ nav li a.initials {
   height: 60px;
   width: 75px;
   background: url("../images/logoeventspot.png");
-  background-size: 50px 50px;
+  background-size: 70px 50px;
     background-repeat: no-repeat;
     background-position: center;
     margin: auto;
