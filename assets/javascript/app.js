@@ -129,6 +129,10 @@ $(document).ready(function(){
 
 			app.closeResult();
 
+			$('#Outfits').html(app.outfitArray)
+
+			app.closeOutfitResult();
+
 		}, // end of updateArrays function
 
 		// *********signs the user out of their google login
@@ -159,11 +163,11 @@ $(document).ready(function(){
 				app.theme = snapshot.val().users[app.userid].theme;
 				app.decorationArray = snapshot.val().users[app.userid].decorationArray.decoration;
 				console.log(app.decorationArray);
-				// app.outfitArray = 
+				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfit;
 				// app.venueArray = 
 
 				// populate arrays on firebase
-				
+
 				app.updateArrays();
 		
 			}); // end of dataInfo on value
@@ -217,6 +221,10 @@ $(document).ready(function(){
 
 					// *******call function to search APIs
 
+					app.ebayAPIDecorations();
+
+					app.ebayAPIOutfits();
+
 				} // end if theme has something typed in
 
 				else {
@@ -231,7 +239,7 @@ $(document).ready(function(){
 
 		}, // end setTheme function
 
-		ebayAPI: function() {
+		ebayAPIDecorations: function() {
 
 			// Construct the request
 			// Replace MyAppID with your Production AppID
@@ -242,8 +250,85 @@ $(document).ready(function(){
 			    url += "&GLOBAL-ID=EBAY-US";
 			    url += "&RESPONSE-DATA-FORMAT=JSON";
 			    url += "&REST-PAYLOAD";
-			    url += "&keywords=harry%20potter";
-			    url += "&paginationInput.entriesPerPage=3";
+			    url += "&keywords=" + app.theme + "%20decoration";
+			    url += "&paginationInput.entriesPerPage=10";
+
+			if ('#theme' == "") {
+				// remind user to type something in the search box
+				$("#errorTheme").html("Please enter a theme for your event.");
+			} // end of if nothing is typed in #theme
+
+			else {
+				// remove error message for typing nothing
+				$("#errorTheme").html("");
+
+				// call ebay API
+
+				$.ajax({url: url, method: 'GET', dataType: 'jsonp'}).done(function(response) {
+
+					console.log(response);
+
+					var items = response.findItemsByKeywordsResponse[0].searchResult[0].item || [];
+
+					// for loop that makes results for top 10 -- this could be changed to more or less results
+
+					for (var i = 0; i < items.length; i++) {
+
+						var item = items[i];
+
+						var title = item.title;
+
+						var pic = item.galleryURL;
+
+						var viewitem = item.viewItemURL;
+
+						if (null != title && null != viewitem) {
+
+							var newDiv = '<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
+
+							app.decorationArray.push(newDiv);
+
+						} // end of if there is a result from ebay
+
+					} // end of for loop to create results
+
+					// save decorationArray to firebase
+
+					var userRef = app.dataInfo.child(app.users);
+
+					var useridRef = userRef.child(app.userid);
+
+					var decorationArrayRef = useridRef.child("decorationArray");
+
+					decorationArrayRef.set({
+						decoration: app.decorationArray
+					});
+
+					// put ebay API decoration results onto webpage
+
+					$('#ebayDecorationResults').html(app.decorationArray)
+
+					app.closeResult();
+
+				}); // end of ajax call to ebay
+
+			} // end of else something in theme
+
+		}, // end of ebayAPIDecorations function
+
+		ebayAPIOutfits: function() {
+
+			// Construct the request
+			// Replace MyAppID with your Production AppID
+			var url = "http://svcs.ebay.com/services/search/FindingService/v1";
+			    url += "?OPERATION-NAME=findItemsByKeywords";
+			    url += "&SERVICE-VERSION=1.0.0";
+			    url += "&SECURITY-APPNAME=RobertPr-EventSpo-PRD-b4d8cb02c-ac0b9e0f";
+			    url += "&GLOBAL-ID=EBAY-US";
+			    url += "&RESPONSE-DATA-FORMAT=JSON";
+			    url += "&REST-PAYLOAD";
+			    url += "&keywords=" + app.theme + "%20clothes";
+			    url += "&paginationInput.entriesPerPage=10";
 
 			$("#searchTheme").on('click', function() {
 				if ('#theme' == "") {
@@ -258,8 +343,6 @@ $(document).ready(function(){
 					// call ebay API
 
 					$.ajax({url: url, method: 'GET', dataType: 'jsonp'}).done(function(response) {
-
-						console.log(response);
 
 						var items = response.findItemsByKeywordsResponse[0].searchResult[0].item || [];
 
@@ -277,9 +360,9 @@ $(document).ready(function(){
 
 							if (null != title && null != viewitem) {
 
-								var newDiv = '<div class="decoration">' + '<i class="fa fa-times-circle-o close" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
+								var newDiv = '<div class="outfit">' + '<i class="fa fa-times-circle-o closeO" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
 
-								app.decorationArray.push(newDiv);
+								app.outfitArray.push(newDiv);
 
 							} // end of if there is a result from ebay
 
@@ -291,17 +374,17 @@ $(document).ready(function(){
 
 						var useridRef = userRef.child(app.userid);
 
-						var decorationArrayRef = useridRef.child("decorationArray");
+						var outfitArrayRef = useridRef.child("outfitArray");
 
-						decorationArrayRef.set({
-							decoration: app.decorationArray
+						outfitArrayRef.set({
+							outfits: app.outfitArray
 						});
 
 						// put ebay API decoration results onto webpage
 
-						$('#ebayDecorationResults').html(app.decorationArray)
+						$('#Outfits').html(app.outfitArray)
 
-						app.closeResult();
+						app.closeOutfitResult();
 
 					}); // end of ajax call to ebay
 
@@ -310,7 +393,7 @@ $(document).ready(function(){
 
 			}); // end of #searchTheme click
 
-		}, // end of ebayAPI function
+		}, // end of ebayAPIOutfits
 
 		// allows you to get rid of search results you don't want
 
@@ -344,6 +427,36 @@ $(document).ready(function(){
 
 		}, // end of closeResult function
 
+		closeOutfitResult: function() {
+
+			// when you click the x at the top right of a result
+
+			$(document).on('click', '.closeO', function() {
+				
+				// removes the result tied to the x from the array
+
+				app.outfitArray.splice($(this).data('index'), 1, "");
+				
+				// save outfitArray to firebase
+
+				var userRef = app.dataInfo.child(app.users);
+
+				var useridRef = userRef.child(app.userid);
+
+				var outfitArrayRef = useridRef.child("outfitArray");
+
+				outfitArrayRef.set({
+					outfit: app.outfitArray
+				});
+
+				// put ebay API decoration results onto webpage over the old ones
+
+				$('#Outfits').html(app.outfitArray)
+
+			}); // end of on click
+
+		}, // end of closeOutfitResult function
+
 	} // End of app object
 
 
@@ -361,7 +474,7 @@ $(document).ready(function(){
 
 	app.setTheme();
 
-	app.ebayAPI();
+	
 
 
 
