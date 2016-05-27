@@ -89,9 +89,7 @@ $(document).ready(function(){
 							food: ""
 						}); // end of userInfoRef set
 
-						
-
-						$('#auth').html('<a class="button-white" id="logout">Log Out</a>')
+						// $('#auth').html('<a class="button-white" id="logout">Log Out</a>')
 
 						var userUpdateRef = useridRef.child("Number");
 
@@ -129,8 +127,8 @@ $(document).ready(function(){
 
 			app.closeResult();
 
-			$('#Outfits').html(app.outfitArray);
-
+			$('#outfits').html(app.outfitArray);
+			console.log(app.outfitArray);
 			app.closeOutfitResult();
 
 		}, // end of updateArrays function
@@ -163,7 +161,7 @@ $(document).ready(function(){
 				app.theme = snapshot.val().users[app.userid].theme;
 				app.decorationArray = snapshot.val().users[app.userid].decorationArray.decoration;
 				console.log(snapshot.val().users[app.userid]);
-				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfit;
+				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfits;
 				console.log(app.outfitArray);
 
 				// populate arrays on firebase
@@ -520,7 +518,7 @@ $(document).ready(function(){
 
 					// put ebay API decoration results onto webpage
 
-					$('#Outfits').html(app.outfitArray)
+					$('#outfits').html(app.outfitArray);
 
 					app.closeOutfitResult();
 
@@ -581,7 +579,7 @@ $(document).ready(function(){
 				var outfitArrayRef = useridRef.child("outfitArray");
 
 				outfitArrayRef.set({
-					outfit: app.outfitArray
+					outfits: app.outfitArray
 				});
 
 				// put ebay API decoration results onto webpage over the old ones
