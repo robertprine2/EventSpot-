@@ -162,8 +162,8 @@ $(document).ready(function(){
 				app.zip = snapshot.val().users[app.userid].zip;
 				app.theme = snapshot.val().users[app.userid].theme;
 				app.decorationArray = snapshot.val().users[app.userid].decorationArray.decoration;
-				console.log(app.decorationArray);
-				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfit;
+				console.log(snapshot.val().users[app.userid]);
+				app.outfitArray = snapshot.val().users[app.userid].outfitArray.outfits;
 				// app.venueArray = 
 
 				// populate arrays on firebase
@@ -175,36 +175,173 @@ $(document).ready(function(){
 
 		}, // end of firebaseToLocal function
 
-		setLocation: function() {
+		 setLocation: function() {
 
-			$('#searchZip').on('click', function() {
+			var fourSquare = {
+			latLng: [],
+			markers: [],
+			allLatLng: [],
+			markerHolder:[],
+			infowindow: null,	
+			zipCode: '32955',
+			};
 
-				// sets what the user typed to zip variable
-				app.zip = $("#zip").val().trim();
+			//Map options for displaying the map in the page and rendering the map controls
+			var mapOptions = {
+			zoom: 4,
+			center: new google.maps.LatLng(37.09024, -100.712891),
+			panControl: false,
+			panControlOptions: {
+			position: google.maps.ControlPosition.BOTTOM_LEFT
+			},
+			zoomControl: true,
+			zoomControlOptions: {
+			style: google.maps.ZoomControlStyle.LARGE,
+			position: google.maps.ControlPosition.RIGHT_CENTER
+			},
+			scaleControl: false
 
-				// checks that zip code is exactly five characters and a number
+			};
 
-				if (app.zip.length == 5 
-					&& isNaN(app.zip) == false) {
+			//Creating the info window for map pop-ups and setting the contents to an empty string
+			fourSquare.infowindow = new google.maps.InfoWindow({
+			content: " "
+			});
 
-					// clear error
-					$('#errorZip').html("");
+			//Getting the google map image and inserting in the div with ID = map
+			map = new google.maps.Map(document.getElementById('map'), mapOptions);	        
 
-					// *******call function to search APIs
+			//Begin of the click event to search the map by zip code
+			$(document).on('click', "#searchZip", function(){
+			//var queryURL1 = "https://maps.googleapis.com/maps/api/geocode/jsonp?address=" + fourSquare.zipCode + "&key=AIzaSyDA2W0021lf_Hnz7TA2KA027IGRRfJypsQ";
 
-				} // end if zip length = 5
+			//API call to the google map geocoder - used to get the users zip code and convert it to a lat/lng to supply to firebase API
 
-				else {
+			// sets what the user typed to zip variable
+					app.zip = $("#zip").val().trim();
 
-					// send user error for zip code
-					$('#errorZip').html("You need to enter a ZIP Code that is exactly 5 numbers.");
+					// checks that zip code is exactly five characters and a number
 
-				} // end else zip length = 5
+					if (app.zip.length == 5 
+						&& isNaN(app.zip) == false) {
 
-				return false;
-			}); // end of on click to search zip code
+						// clear error
+						$('#errorZip').html("");
 
-		}, // End of setLocation function
+						// *******call function to search APIs
+
+					} // end if zip length = 5
+
+					else {
+
+						// send user error for zip code
+						$('#errorZip').html("You need to enter a ZIP Code that is exactly 5 numbers.");
+
+					} // end else zip length = 5
+
+
+			//zip = $('#zip').val();
+			//zip=fourSquare.zipCode;
+			var queryURL1 = "https://maps.googleapis.com/maps/api/geocode/json?address=" + app.zip + "&key=AIzaSyDA2W0021lf_Hnz7TA2KA027IGRRfJypsQ";
+			$.ajax({
+			url: queryURL1,
+			dataType: 'json',
+			method: 'GET'
+
+			})
+			.done(function(response){
+			console.log(queryURL1);
+			console.log(response);
+			var rawResults = response.results;
+			console.log(rawResults);
+
+			var zipLattitude = rawResults[0].geometry.location.lat;
+			var zipLongitude = rawResults[0].geometry.location.lng;
+			console.log(zipLattitude);
+			console.log(zipLongitude);
+			console.log(location);
+
+			//Begin of the Foursquare API call to get venue information. Foursquare doese not have zip code search
+			//Therefore, using google geocogding to convert lat/lng above and add the parsed latitude and longitude to the api key below
+			var queryURL = "https://api.foursquare.com/v2/venues/search?client_id=X0WXLYI1UQH1XYCJPLHLQCMV1VBUPYXOAE53F1T4VVUKKZER&client_secret=RXWL2N1WRY2UVBO35L3CRV01PLKPJXE2DDVBYDYIIYNQ3RRN&v=20130815&categoryId=56aa371be4b08b9a8d5734cf,4bf58dd8d48988d173941735,4bf58dd8d48988d100941735,4bf58dd8d48988d171941735&ll=" + zipLattitude + "," +zipLongitude+ "&radius=17000";
+			$.ajax({
+			url: queryURL,
+			dataType:'jsonp',
+			method: 'GET'
+
+			})
+			.done(function(response){
+			console.log(queryURL);
+			console.log(response);
+			console.log(response);
+			var results = response.response.venues;
+			//console.log(results[0].name);
+			//console.log(results.venues[0].location.lat);
+
+			//Iterating through the results from the Foursquare json data
+			for(var i = 0; i < results.length; i++){
+				
+				//Getting the lat and lng and setting to latitude and longitude variables for the map markers
+				var lattitude = results[i].location.lat;
+				var longitude = results[i].location.lng;
+
+				
+				latLng = new google.maps.LatLng(lattitude, longitude);
+
+				console.log(results[i].location.lat);
+				console.log(results[i].location.lng);
+
+				//Information for populating the infowindows for the map markers
+				fourSquare.markerVar = new google.maps.Marker({
+					position: latLng,
+					map: map,
+					title: results[i].name,
+					html: 
+						'<div class="pop">' +
+						'<h1>' + results[i].name + '</h1>' + 
+						'<p>' + results[i].location.address + '<br>' +results[i].location.city+ ', ' +results[i].location.state+ ' ' +results[i].location.postalCode+ '<br>' +results[i].location.country+ '</p>' +
+
+						'</div>'
+
+			 });
+
+				console.log(fourSquare.markers);
+				
+				//Pushing the lat/lng to allLatLng array 
+				fourSquare.allLatLng.push(latLng);
+
+				//Pushing markers to markers array
+				fourSquare.markers.push(fourSquare.markerVar);
+
+				console.log(fourSquare.markerHolder);
+
+			}
+
+				console.log(fourSquare.markers);
+
+			//For each function to iterate through array and attach infowindows to each of the map markers
+			fourSquare.markers.forEach(function(marker){
+				marker.addListener('click', function () {
+					fourSquare.infowindow.setContent(marker.html);
+					fourSquare.infowindow.open(map, marker);
+					});
+			});
+
+			//Loop assigned to iterate through map marker placement and set the bounds of the map on the users screen
+			var bounds = new google.maps.LatLngBounds ();
+				for (var j = 0, LtLgLen = fourSquare.allLatLng.length; j < LtLgLen; j++) {
+				  bounds.extend(fourSquare.allLatLng[j]);
+				}
+				map.fitBounds(bounds);
+
+			});//End API call to the Foursquare event locator
+			});//End API call to the google map geocoder
+
+			return false;
+			});
+
+
+			 }, // End of setLocation function
 
 		setTheme: function() {
 
@@ -212,7 +349,7 @@ $(document).ready(function(){
 
 				// sets what the user typed to theme variable
 				app.theme = $("#theme").val().trim();
-				
+				console.log(app.theme);
 				// if theme has something written in it
 				if (app.theme != "") {
 
@@ -238,6 +375,7 @@ $(document).ready(function(){
 			}); // end of click on #setTheme
 
 		}, // end setTheme function
+
 
 		ebayAPIDecorations: function() {
 
@@ -330,68 +468,65 @@ $(document).ready(function(){
 			    url += "&keywords=" + app.theme + "%20clothes";
 			    url += "&paginationInput.entriesPerPage=10";
 
-			$("#searchTheme").on('click', function() {
-				if ('#theme' == "") {
-					// remind user to type something in the search box
-					$("#errorTheme").html("Please enter a theme for your event.");
-				} // end of if nothing is typed in #theme
+			
+			if ('#theme' == "") {
+				// remind user to type something in the search box
+				$("#errorTheme").html("Please enter a theme for your event.");
+			} // end of if nothing is typed in #theme
 
-				else {
-					// remove error message for typing nothing
-					$("#errorTheme").html("");
+			else {
+				// remove error message for typing nothing
+				$("#errorTheme").html("");
 
-					// call ebay API
+				// call ebay API
 
-					$.ajax({url: url, method: 'GET', dataType: 'jsonp'}).done(function(response) {
+				$.ajax({url: url, method: 'GET', dataType: 'jsonp'}).done(function(response) {
 
-						var items = response.findItemsByKeywordsResponse[0].searchResult[0].item || [];
+					var items = response.findItemsByKeywordsResponse[0].searchResult[0].item || [];
 
-						// for loop that makes results for top 10 -- this could be changed to more or less results
+					// for loop that makes results for top 10 -- this could be changed to more or less results
 
-						for (var i = 0; i < items.length; i++) {
+					for (var i = 0; i < items.length; i++) {
 
-							var item = items[i];
+						var item = items[i];
 
-							var title = item.title;
+						var title = item.title;
 
-							var pic = item.galleryURL;
+						var pic = item.galleryURL;
 
-							var viewitem = item.viewItemURL;
+						var viewitem = item.viewItemURL;
 
-							if (null != title && null != viewitem) {
+						if (null != title && null != viewitem) {
 
-								var newDiv = '<div class="outfit">' + '<i class="fa fa-times-circle-o closeO" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
+							var newDiv = '<div class="outfit">' + '<i class="fa fa-times-circle-o closeO" aria-hidden="true" data-index="' + app.decorationArray.length + '"></i>' + '<img src="' + pic + '" border="0">' + '<a href="' + viewitem + '" target="_blank">' + title + '</a>';
 
-								app.outfitArray.push(newDiv);
+							app.outfitArray.push(newDiv);
 
-							} // end of if there is a result from ebay
+						} // end of if there is a result from ebay
 
-						} // end of for loop to create results
+					} // end of for loop to create results
 
-						// save decorationArray to firebase
+					// save decorationArray to firebase
 
-						var userRef = app.dataInfo.child(app.users);
+					var userRef = app.dataInfo.child(app.users);
 
-						var useridRef = userRef.child(app.userid);
+					var useridRef = userRef.child(app.userid);
 
-						var outfitArrayRef = useridRef.child("outfitArray");
+					var outfitArrayRef = useridRef.child("outfitArray");
+					console.log(app.outfitArray)
+					outfitArrayRef.set({
+						outfits: app.outfitArray
+					});
 
-						outfitArrayRef.set({
-							outfits: app.outfitArray
-						});
+					// put ebay API decoration results onto webpage
 
-						// put ebay API decoration results onto webpage
+					$('#Outfits').html(app.outfitArray)
 
-						$('#Outfits').html(app.outfitArray)
+					app.closeOutfitResult();
 
-						app.closeOutfitResult();
+				}); // end of ajax call to ebay
 
-					}); // end of ajax call to ebay
-
-				} // end of else something in theme
-
-
-			}); // end of #searchTheme click
+			} // end of else something in theme
 
 		}, // end of ebayAPIOutfits
 
