@@ -480,6 +480,12 @@ footer {
   cursor: pointer;
 }
 
+.decoration{
+  display: inline-block;
+  
+
+}
+
 /* Search Results */
 
 .close {
